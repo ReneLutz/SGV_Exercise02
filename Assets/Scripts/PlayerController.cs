@@ -1,17 +1,24 @@
 ﻿using UnityEngine;
+using UnityEngine.UIElements;
 
 public class PlayerController : MonoBehaviour
 {
     public float _speed;
+    public float _projectileCooldown;
+
+    public GameObject _projectilePrefab;
+
+    private float nextProjectileTime ;
 
     Transform _transform;
     Camera _camera;
-
 
     void Start()
     {
         this._transform = transform;
         this._camera = Camera.main;
+
+        this.nextProjectileTime = 0.0f;
     }
 
     //Standard UpdateLoop (once per Frame)
@@ -23,22 +30,37 @@ public class PlayerController : MonoBehaviour
 
         if(Input.GetKey(KeyCode.W))
         {
-            transform.position += Vector3.up * deltaSpeed;
+            this._transform.position += Vector3.up * deltaSpeed;
         }
 
         if (Input.GetKey(KeyCode.A))
         {
-            transform.position += Vector3.left * deltaSpeed;
+            this._transform.position += Vector3.left * deltaSpeed;
         }
 
         if (Input.GetKey(KeyCode.S))
         {
-            transform.position += Vector3.down * deltaSpeed;
+            this._transform.position += Vector3.down * deltaSpeed;
         }
 
         if (Input.GetKey(KeyCode.D))
         {
-            transform.position += Vector3.right * deltaSpeed;
+            this._transform.position += Vector3.right * deltaSpeed;
+        }
+
+        // With GetKey the user would be able to shoot projectiles as long as he presses the LMB
+        if (Input.GetKey(KeyCode.Mouse0) && nextProjectileTime < Time.time)
+        {
+            nextProjectileTime = Time.time + _projectileCooldown;
+
+            var prefabCopy = Instantiate(_projectilePrefab, _transform.position, Quaternion.identity);
+            var projectile = prefabCopy.GetComponent<Projectile>();
+
+            Vector2 direction = this._camera.ScreenToWorldPoint(Input.mousePosition);
+
+            projectile.Init(direction);
+
+            Destroy(prefabCopy, 10.0f);
         }
     }
 

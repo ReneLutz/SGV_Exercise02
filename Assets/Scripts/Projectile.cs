@@ -7,7 +7,9 @@ public class Projectile : MonoBehaviour
     Vector3 _direction;
     Transform _transform;
     Camera _camera;
-    
+
+    float _speed = 1.0f;
+
     //We set values in a Init method. Virtual, so we can extend it later :)
     public virtual Projectile Init(Vector3 direction){
         this._direction = direction;
@@ -26,7 +28,7 @@ public class Projectile : MonoBehaviour
 
     void Update()
     {
-
+        this._transform.position += this._direction.normalized * (this._speed * Time.deltaTime);
     }
 
     
