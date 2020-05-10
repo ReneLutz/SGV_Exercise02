@@ -8,7 +8,7 @@ public class Projectile : MonoBehaviour
     Transform _transform;
     Camera _camera;
 
-    float _speed = 1.0f;
+    float _speed = 10.0f;
 
     //We set values in a Init method. Virtual, so we can extend it later :)
     public virtual Projectile Init(Vector3 direction){
