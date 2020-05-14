@@ -1,14 +1,16 @@
 ﻿using UnityEngine;
+using UnityEngine.Rendering;
 using UnityEngine.UIElements;
 
 public class PlayerController : MonoBehaviour
 {
-    public float _speed;
-    public float _projectileCooldown;
+    [SerializeField] float _speed;
 
-    public GameObject _projectilePrefab;
+    [SerializeField] Projectile _projectilePrefab;
+    [SerializeField] float _projectileCooldown;
+    [SerializeField] float _projectileTtl = 5f;
 
-    private float nextProjectileTime ;
+    private float nextProjectileTime;
 
     Transform _transform;
     Camera _camera;
@@ -24,11 +26,16 @@ public class PlayerController : MonoBehaviour
     //Standard UpdateLoop (once per Frame)
     void Update()
     {
+        this.Move();
         this.Rotate();
+        this.Shoot();
+    }
 
+    void Move()
+    {
         float deltaSpeed = _speed * Time.deltaTime;
 
-        if(Input.GetKey(KeyCode.W))
+        if (Input.GetKey(KeyCode.W))
         {
             this._transform.position += Vector3.up * deltaSpeed;
         }
@@ -47,20 +54,20 @@ public class PlayerController : MonoBehaviour
         {
             this._transform.position += Vector3.right * deltaSpeed;
         }
+    }
 
+    void Shoot()
+    {
         // With GetKey the user would be able to shoot projectiles as long as he presses the LMB
         if (Input.GetKey(KeyCode.Mouse0) && nextProjectileTime < Time.time)
         {
             nextProjectileTime = Time.time + _projectileCooldown;
 
-            var prefabCopy = Instantiate(_projectilePrefab, _transform.position, Quaternion.identity);
-            var projectile = prefabCopy.GetComponent<Projectile>();
+            Vector3 mousePos = this._camera.ScreenToWorldPoint(Input.mousePosition);
 
-            Vector2 direction = this._camera.ScreenToWorldPoint(Input.mousePosition);
+            var projectileCopy = Instantiate(_projectilePrefab, _transform.position, Quaternion.identity).Init(mousePos - _transform.position);
 
-            projectile.Init(direction);
-
-            Destroy(prefabCopy, 10.0f);
+            Destroy(projectileCopy, _projectileTtl);
         }
     }
 

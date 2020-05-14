@@ -8,11 +8,13 @@ public class Projectile : MonoBehaviour
     Transform _transform;
     Camera _camera;
 
-    float _speed = 10.0f;
+    [SerializeField] float _speed = 5.0f;
 
     //We set values in a Init method. Virtual, so we can extend it later :)
     public virtual Projectile Init(Vector3 direction){
         this._direction = direction;
+        this._direction.z = 0;
+        this._direction = this._direction.normalized;
         /*
         Your Code here
         */
@@ -28,7 +30,7 @@ public class Projectile : MonoBehaviour
 
     void Update()
     {
-        this._transform.position += this._direction.normalized * (this._speed * Time.deltaTime);
+        this._transform.position += this._direction * (this._speed * Time.deltaTime);
     }
 
     

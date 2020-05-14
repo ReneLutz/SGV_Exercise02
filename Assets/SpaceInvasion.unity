@@ -402,10 +402,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f5792bf9e50b8574d910eb6fd3e041ab, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _speed: 10
+  _speed: 5
   _projectileCooldown: 0.2
-  _projectilePrefab: {fileID: 6103896252692881460, guid: a1bef48103edfe949ae86fa3568ad081,
+  _projectilePrefab: {fileID: 2709575139681759923, guid: a1bef48103edfe949ae86fa3568ad081,
     type: 3}
+  _projectileTtl: 5
 --- !u!1 &1780757038
 GameObject:
   m_ObjectHideFlags: 0
