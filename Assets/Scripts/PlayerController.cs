@@ -67,7 +67,7 @@ public class PlayerController : MonoBehaviour
 
             var projectileCopy = Instantiate(_projectilePrefab, _transform.position, Quaternion.identity).Init(mousePos - _transform.position);
 
-            Destroy(projectileCopy, _projectileTtl);
+            Destroy(projectileCopy.gameObject, _projectileTtl);
         }
     }
 
