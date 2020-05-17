@@ -1,26 +1,23 @@
-﻿using UnityEngine;
-using UnityEngine.Rendering;
-using UnityEngine.UIElements;
+﻿using System.Collections.Generic;
+using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
-    [SerializeField] float _speed;
+    [SerializeField] private float _speed;
+    [SerializeField] private Weapon _currentWeapon;
 
-    [SerializeField] Projectile _projectilePrefab;
-    [SerializeField] float _projectileCooldown;
-    [SerializeField] float _projectileTtl = 5f;
-
-    private float nextProjectileTime;
+    private List<Weapon> _weapons = new List<Weapon>();
+    private int _weaponIndex = 0;
 
     Transform _transform;
     Camera _camera;
 
-    void Start()
+    void Start() 
     {
         this._transform = transform;
         this._camera = Camera.main;
 
-        this.nextProjectileTime = 0.0f;
+        _weapons.Add(_currentWeapon);
     }
 
     //Standard UpdateLoop (once per Frame)
@@ -28,6 +25,7 @@ public class PlayerController : MonoBehaviour
     {
         this.Move();
         this.Rotate();
+        this.SwitchWeapon();
         this.Shoot();
     }
 
@@ -56,18 +54,32 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    void SwitchWeapon()
+    {
+        if (Input.GetAxis("Mouse ScrollWheel") > 0f)
+        {
+            _weaponIndex = (_weapons.Count + _weaponIndex + 1) % _weapons.Count;
+        }
+
+        if (Input.GetAxis("Mouse ScrollWheel") < 0f)
+        {
+            _weaponIndex = (_weapons.Count + _weaponIndex - 1) % _weapons.Count;
+        }
+
+        if (_weapons.Count > 1)
+        {
+            _currentWeapon = _weapons[_weaponIndex];
+        }
+    }
+
     void Shoot()
     {
         // With GetKey the user would be able to shoot projectiles as long as he presses the LMB
-        if (Input.GetKey(KeyCode.Mouse0) && nextProjectileTime < Time.time)
+        if (Input.GetKey(KeyCode.Mouse0))
         {
-            nextProjectileTime = Time.time + _projectileCooldown;
-
             Vector3 mousePos = this._camera.ScreenToWorldPoint(Input.mousePosition);
 
-            var projectileCopy = Instantiate(_projectilePrefab, _transform.position, Quaternion.identity).Init(mousePos - _transform.position);
-
-            Destroy(projectileCopy.gameObject, _projectileTtl);
+            _currentWeapon.Shoot(mousePos - _transform.position);
         }
     }
 
@@ -77,5 +89,10 @@ public class PlayerController : MonoBehaviour
         float angleDeg = (180 / Mathf.PI) * angleRad;
         this._transform.rotation = Quaternion.Euler(0, 0, angleDeg - 90);//diese -90 sind nötig für Sprites, die nach oben zeigen. Nutzen Sie andere Assets, könnte es sein, dass die das anpassen müssen
         
+    }
+
+    public void AddWeapon(Weapon weapon)
+    {
+        _weapons.Add(weapon);
     }
 }
