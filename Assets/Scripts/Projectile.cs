@@ -1,23 +1,22 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class Projectile : MonoBehaviour
 {
+    [SerializeField] private float _speed = 5.0f;
+    [SerializeField] private float _projectileTtl = 5.0f;
+
     Vector3 _direction;
     Transform _transform;
     Camera _camera;
-
-    [SerializeField] float _speed = 5.0f;
 
     //We set values in a Init method. Virtual, so we can extend it later :)
     public virtual Projectile Init(Vector3 direction){
         this._direction = direction;
         this._direction.z = 0;
         this._direction = this._direction.normalized;
-        /*
-        Your Code here
-        */
+
+        this._projectileTtl = 5.0f;
+
         return this;
     }
 
@@ -31,6 +30,9 @@ public class Projectile : MonoBehaviour
     void Update()
     {
         this._transform.position += this._direction * (this._speed * Time.deltaTime);
+
+        this._projectileTtl -= Time.deltaTime;
+        if (_projectileTtl <= 0) this.gameObject.SetActive(false);
     }
 
     
