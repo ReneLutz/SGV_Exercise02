@@ -14,7 +14,5 @@ public class SingleFireWeapon : Weapon
         projectile.transform.position = parentTransform.position;
         projectile.transform.rotation = parentTransform.rotation;
         projectile.Init(direction);
-
-        projectile.gameObject.SetActive(true);
     }
 }
