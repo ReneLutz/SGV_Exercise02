@@ -25,7 +25,6 @@ public abstract class ObjectPool<T> : MonoBehaviour where T : MonoBehaviour
             }
         }
 
-
         // No inactive object available. Create new object
         T objectCopy = Instantiate(_objectPrefab);
         objectCopy.transform.parent = this.gameObject.transform;
