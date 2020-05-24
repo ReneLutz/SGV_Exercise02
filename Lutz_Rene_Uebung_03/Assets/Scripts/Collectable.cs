@@ -2,7 +2,7 @@
 
 public class Collectable : MonoBehaviour
 {
-    [SerializeField] private MultiFireWeapon _weaponPrefab;
+    [SerializeField] private MultiFireWeapon _weapon;
 
     // Start is called before the first frame update
     void Start() { }
@@ -12,14 +12,11 @@ public class Collectable : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collider)
     {
-        PlayerController player = collider.gameObject.GetComponent<PlayerController>();
+        PlayerController player = collider.GetComponent<PlayerController>();
 
         if (player != null)
         {
-            Weapon weapon = Instantiate(_weaponPrefab);
-            weapon.transform.parent = player.gameObject.transform;
-
-            player.AddWeapon(weapon);
+            player.AddWeapon(_weapon);
 
             Destroy(this.gameObject);
         }

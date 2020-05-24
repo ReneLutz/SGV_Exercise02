@@ -93,6 +93,9 @@ public class PlayerController : MonoBehaviour
 
     public void AddWeapon(Weapon weapon)
     {
+        weapon.transform.position = _transform.position;
+        weapon.transform.SetParent(_transform);
+
         _weapons.Add(weapon);
     }
 }
