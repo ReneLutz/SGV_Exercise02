@@ -4,6 +4,8 @@ public class Enemy : MonoBehaviour
 {
     [SerializeField] private float _speed;
 
+    private Vector3 _direction;
+
     private PlayerController _player;
 
     private Rigidbody2D _body;
@@ -19,6 +21,11 @@ public class Enemy : MonoBehaviour
         return this;
     }
 
+    public void Explode()
+    {
+        gameObject.SetActive(false);
+    }
+
     // Start is called before the first frame update
     void Start()
     {
@@ -30,6 +37,9 @@ public class Enemy : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        _direction = _player.transform.position - _transform.position;
+        _direction.z = 0;
+
         Rotate();
     }
 
@@ -45,13 +55,28 @@ public class Enemy : MonoBehaviour
 
     private void Move()
     {
-        Vector3 direction = _player.transform.position - _transform.position;
-        direction.z = 0;
-
-        _body.MovePosition(_transform.position + (direction.normalized * _speed * Time.fixedDeltaTime));
-
+        _body.MovePosition(_transform.position + (_direction.normalized * _speed * Time.fixedDeltaTime));
     }
 
+    private void OnTriggerEnter2D(Collider2D collider)
+    {
+        Projectile projectile = collider.GetComponent<Projectile>();
+
+        if (!projectile) return;
+
+        projectile.Dispose();
+
+        Explode();
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        PlayerController player = collision.otherCollider.GetComponent<PlayerController>();
+
+        if (!player) return;
+
+        Explode();
+    }
 }
 
 
