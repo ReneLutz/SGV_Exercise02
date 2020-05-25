@@ -1,21 +1,29 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using UnityEngine;
 
 public class Enemy : MonoBehaviour
 {
     [SerializeField] private float _speed;
+
+    [SerializeField] private ParticleSystem _explosion;
 
     private Vector3 _direction;
 
     private PlayerController _player;
 
     private Rigidbody2D _body;
+    private CircleCollider2D _collider;
 
     private Transform _transform;
 
     public virtual Enemy Init(PlayerController player)
     {
         _body = this.GetComponent<Rigidbody2D>();
+        _collider = this.GetComponent<CircleCollider2D>();
 
+        _body.simulated = true;
+        _collider.enabled = true;
+        
         _player = player;
         
         return this;
@@ -23,7 +31,13 @@ public class Enemy : MonoBehaviour
 
     public void Explode()
     {
-        gameObject.SetActive(false);
+        //Disable collisions
+        _body.simulated = false;
+        _collider.enabled = false;
+
+        _explosion.Play();
+
+        StartCoroutine(Disable());
     }
 
     // Start is called before the first frame update
@@ -77,6 +91,16 @@ public class Enemy : MonoBehaviour
         if (!player) return;
 
         Explode();
+    }
+
+    private IEnumerator Disable()
+    {
+        while(_explosion.isPlaying)
+        {
+            yield return null;
+        }
+
+        gameObject.SetActive(false);
     }
 }
 
