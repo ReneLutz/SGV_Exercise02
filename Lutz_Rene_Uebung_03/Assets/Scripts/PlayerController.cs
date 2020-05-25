@@ -30,7 +30,6 @@ public class PlayerController : MonoBehaviour
     void Update()
     {
         this.MovementInputs();
-        this.Rotate();
         this.SwitchWeapon();
         this.Shoot();
     }
@@ -38,6 +37,7 @@ public class PlayerController : MonoBehaviour
     void FixedUpdate()
     {
         Move();
+        Rotate();
     }
 
     private void Move()
@@ -83,8 +83,7 @@ public class PlayerController : MonoBehaviour
         Vector2 mousePos = this._camera.ScreenToWorldPoint(Input.mousePosition);
         float angleRad = Mathf.Atan2(mousePos.y - this._transform.position.y, mousePos.x - this._transform.position.x);
         float angleDeg = (180 / Mathf.PI) * angleRad;
-        this._transform.rotation = Quaternion.Euler(0, 0, angleDeg - 90);//diese -90 sind nötig für Sprites, die nach oben zeigen. Nutzen Sie andere Assets, könnte es sein, dass die das anpassen müssen
-        
+        _body.MoveRotation(angleDeg - 90);//diese -90 sind nötig für Sprites, die nach oben zeigen. Nutzen Sie andere Assets, könnte es sein, dass die das anpassen müssen 
     }
 
     public void AddWeapon(Weapon weapon)

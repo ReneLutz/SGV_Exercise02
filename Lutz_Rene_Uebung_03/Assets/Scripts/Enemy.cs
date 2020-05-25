@@ -39,18 +39,19 @@ public class Enemy : MonoBehaviour
     {
         _direction = _player.transform.position - _transform.position;
         _direction.z = 0;
-
-        Rotate();
     }
 
     void FixedUpdate()
     {
         Move();
+        Rotate();
     }
 
     private void Rotate()
     {
-
+        float angleRad = Mathf.Atan2(_direction.y, _direction.x);
+        float angleDeg = (180 / Mathf.PI) * angleRad;
+        _body.MoveRotation(angleDeg - 90);
     }
 
     private void Move()
@@ -71,7 +72,7 @@ public class Enemy : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        PlayerController player = collision.otherCollider.GetComponent<PlayerController>();
+        PlayerController player = collision.gameObject.GetComponent<PlayerController>();
 
         if (!player) return;
 
