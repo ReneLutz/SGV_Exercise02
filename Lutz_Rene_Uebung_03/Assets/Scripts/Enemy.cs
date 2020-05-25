@@ -6,12 +6,16 @@ public class Enemy : MonoBehaviour
 
     private PlayerController _player;
 
+    private Rigidbody2D _body;
+
     private Transform _transform;
 
     public virtual Enemy Init(PlayerController player)
     {
-        _player = player;
+        _body = this.GetComponent<Rigidbody2D>();
 
+        _player = player;
+        
         return this;
     }
 
@@ -26,8 +30,11 @@ public class Enemy : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
         Rotate();
+    }
+
+    void FixedUpdate()
+    {
         Move();
     }
 
@@ -41,7 +48,7 @@ public class Enemy : MonoBehaviour
         Vector3 direction = _player.transform.position - _transform.position;
         direction.z = 0;
 
-        _transform.position = _transform.position + (direction.normalized * _speed * Time.deltaTime);
+        _body.MovePosition(_transform.position + (direction.normalized * _speed * Time.fixedDeltaTime));
 
     }
 

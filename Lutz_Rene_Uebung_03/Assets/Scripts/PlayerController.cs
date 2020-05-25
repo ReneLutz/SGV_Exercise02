@@ -6,8 +6,12 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float _speed;
     [SerializeField] private Weapon _currentWeapon;
 
+    private Rigidbody2D _body;
+
     private List<Weapon> _weapons = new List<Weapon>();
     private int _weaponIndex = 0;
+
+    private Vector3 _direction;
 
     Transform _transform;
     Camera _camera;
@@ -17,44 +21,36 @@ public class PlayerController : MonoBehaviour
         this._transform = transform;
         this._camera = Camera.main;
 
+        _body = this.GetComponent<Rigidbody2D>();
+
         _weapons.Add(_currentWeapon);
     }
 
     //Standard UpdateLoop (once per Frame)
     void Update()
     {
-        this.Move();
+        this.MovementInputs();
         this.Rotate();
         this.SwitchWeapon();
         this.Shoot();
     }
 
-    void Move()
+    void FixedUpdate()
     {
-        float deltaSpeed = _speed * Time.deltaTime;
-
-        if (Input.GetKey(KeyCode.W))
-        {
-            this._transform.position += Vector3.up * deltaSpeed;
-        }
-
-        if (Input.GetKey(KeyCode.A))
-        {
-            this._transform.position += Vector3.left * deltaSpeed;
-        }
-
-        if (Input.GetKey(KeyCode.S))
-        {
-            this._transform.position += Vector3.down * deltaSpeed;
-        }
-
-        if (Input.GetKey(KeyCode.D))
-        {
-            this._transform.position += Vector3.right * deltaSpeed;
-        }
+        Move();
     }
 
-    void SwitchWeapon()
+    private void Move()
+    {
+        _body.MovePosition(_transform.position + (_direction * _speed * Time.fixedDeltaTime));
+    }
+
+    private void MovementInputs()
+    {
+        _direction = new Vector3(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"), 0.0f);        
+    }
+
+    private void SwitchWeapon()
     {
         if (Input.GetAxis("Mouse ScrollWheel") > 0f)
         {
@@ -72,7 +68,7 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    void Shoot()
+    private void Shoot()
     {
         // With GetKey the user would be able to shoot projectiles as long as he presses the LMB
         if (Input.GetKey(KeyCode.Mouse0))
