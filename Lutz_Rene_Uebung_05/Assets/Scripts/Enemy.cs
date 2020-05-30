@@ -13,16 +13,13 @@ public class Enemy : MonoBehaviour
 
     private Rigidbody2D _body;
     private CircleCollider2D _collider;
-    private SpriteRenderer _renderer; 
+    private SpriteRenderer _renderer;
+    private AudioSource _sound;
 
     private Transform _transform;
 
     public virtual Enemy Init(PlayerController player)
     {
-        _body = this.GetComponent<Rigidbody2D>();
-        _collider = this.GetComponent<CircleCollider2D>();
-        _renderer = GetComponent<SpriteRenderer>();
-
         _body.simulated = true;
         _collider.enabled = true;
         _renderer.enabled = true;
@@ -40,8 +37,18 @@ public class Enemy : MonoBehaviour
         _renderer.enabled = false;
 
         _explosion.Play();
+        _sound.Play();
 
         StartCoroutine(Disable());
+    }
+
+    private void Awake()
+    {
+        _body = this.GetComponent<Rigidbody2D>();
+        _collider = this.GetComponent<CircleCollider2D>();
+        _renderer = GetComponent<SpriteRenderer>();
+
+        _sound = GetComponent<AudioSource>();
     }
 
     // Start is called before the first frame update
