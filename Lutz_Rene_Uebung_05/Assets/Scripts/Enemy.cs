@@ -13,6 +13,7 @@ public class Enemy : MonoBehaviour
 
     private Rigidbody2D _body;
     private CircleCollider2D _collider;
+    private SpriteRenderer _renderer; 
 
     private Transform _transform;
 
@@ -20,10 +21,12 @@ public class Enemy : MonoBehaviour
     {
         _body = this.GetComponent<Rigidbody2D>();
         _collider = this.GetComponent<CircleCollider2D>();
+        _renderer = GetComponent<SpriteRenderer>();
 
         _body.simulated = true;
         _collider.enabled = true;
-        
+        _renderer.enabled = true;
+
         _player = player;
         
         return this;
@@ -34,6 +37,7 @@ public class Enemy : MonoBehaviour
         //Disable collisions
         _body.simulated = false;
         _collider.enabled = false;
+        _renderer.enabled = false;
 
         _explosion.Play();
 
@@ -95,9 +99,11 @@ public class Enemy : MonoBehaviour
 
     private IEnumerator Disable()
     {
+
+        WaitForEndOfFrame wait = new WaitForEndOfFrame();
         while(_explosion.isPlaying)
         {
-            yield return null;
+            yield return wait;
         }
 
         gameObject.SetActive(false);
