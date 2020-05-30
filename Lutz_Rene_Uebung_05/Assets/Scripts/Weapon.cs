@@ -4,6 +4,7 @@ public abstract class Weapon : MonoBehaviour
 {
     [SerializeField] protected ProjectilePool _projectilePool;
     [SerializeField] protected float _projectileCooldown;
+    [SerializeField] protected float _projectileDamage;
 
     private float nextProjectileTime;
 

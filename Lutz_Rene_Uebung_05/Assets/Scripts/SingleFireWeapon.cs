@@ -7,6 +7,7 @@ public class SingleFireWeapon : Weapon
     void Start() 
     {
         _sound = GetComponent<AudioSource>();
+        _projectileDamage = 2;
     }
 
     void Update() { }
@@ -18,7 +19,7 @@ public class SingleFireWeapon : Weapon
 
         projectile.transform.position = parentTransform.position;
         projectile.transform.rotation = parentTransform.rotation;
-        projectile.Init(direction);
+        projectile.Init(direction, _projectileDamage);
 
         _sound.Play();
     }

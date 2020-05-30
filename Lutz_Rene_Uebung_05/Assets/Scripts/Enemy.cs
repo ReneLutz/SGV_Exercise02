@@ -3,9 +3,12 @@ using UnityEngine;
 
 public class Enemy : MonoBehaviour
 {
+    [SerializeField] private float _maxLife = 2;
     [SerializeField] private float _speed;
 
     [SerializeField] private ParticleSystem _explosion;
+
+    private float _life;
 
     private Vector3 _direction;
 
@@ -25,7 +28,8 @@ public class Enemy : MonoBehaviour
         _renderer.enabled = true;
 
         _player = player;
-        
+        _life = _maxLife;
+
         return this;
     }
 
@@ -92,7 +96,12 @@ public class Enemy : MonoBehaviour
 
         projectile.Dispose();
 
-        Explode();
+        _life -= projectile.Damage;
+
+        if (_life <= 0)
+        {
+            Explode();
+        }
     }
 
     private void OnCollisionEnter2D(Collision2D collision)

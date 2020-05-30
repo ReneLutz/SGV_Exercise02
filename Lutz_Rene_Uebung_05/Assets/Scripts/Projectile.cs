@@ -1,8 +1,9 @@
-﻿using Unity.Collections.LowLevel.Unsafe;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class Projectile : MonoBehaviour
 {
+    public float Damage { get; private set; } = 2;
+
     [SerializeField] private float _speed = 5.0f;
     [SerializeField] private float _projectileTtl = 5.0f;
 
@@ -11,13 +12,14 @@ public class Projectile : MonoBehaviour
     Camera _camera;
 
     //We set values in a Init method. Virtual, so we can extend it later :)
-    public virtual Projectile Init(Vector3 direction)
+    public virtual Projectile Init(Vector3 direction, float damage)
     {
         this._direction = direction;
         this._direction.z = 0;
         this._direction = this._direction.normalized;
 
         this._projectileTtl = 5.0f;
+        this.Damage = damage;
 
         return this;
     }

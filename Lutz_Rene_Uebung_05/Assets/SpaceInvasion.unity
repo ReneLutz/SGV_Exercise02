@@ -747,6 +747,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f5792bf9e50b8574d910eb6fd3e041ab, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  life: 3
   _speed: 5
   _currentWeapon: {fileID: 1887087993}
 --- !u!58 &645227606
@@ -1645,6 +1646,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _projectilePool: {fileID: 986354013}
   _projectileCooldown: 0.1
+  _projectileDamage: 2
 --- !u!82 &1887087994
 AudioSource:
   m_ObjectHideFlags: 0
@@ -1787,6 +1789,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _projectilePool: {fileID: 752919870}
   _projectileCooldown: 0.2
+  _projectileDamage: 1
   _numberProjectiles: 3
 --- !u!82 &1988347173
 AudioSource:

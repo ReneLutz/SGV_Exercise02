@@ -11,6 +11,7 @@ public class MultiFireWeapon : Weapon
     void Start() 
     {
         _sound = GetComponent<AudioSource>();
+        _projectileDamage = 1;
     }
 
     void Update() { }
@@ -29,7 +30,7 @@ public class MultiFireWeapon : Weapon
             projectile.transform.position = parentTransform.position;
             projectile.transform.rotation = parentTransform.rotation;
             projectile.transform.Rotate(new Vector3(0, 0, (i - 1) * projectileAngle), Space.Self);
-            projectile.Init(Quaternion.AngleAxis((i - 1) * projectileAngle, Vector3.forward) * direction);
+            projectile.Init(Quaternion.AngleAxis((i - 1) * projectileAngle, Vector3.forward) * direction, _projectileDamage);
         }
 
         _sound.Play();
