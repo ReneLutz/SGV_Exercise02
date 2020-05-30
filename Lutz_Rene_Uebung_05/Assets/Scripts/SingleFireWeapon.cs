@@ -2,7 +2,12 @@
 
 public class SingleFireWeapon : Weapon
 {
-    void Start() { }
+    private AudioSource _sound;
+
+    void Start() 
+    {
+        _sound = GetComponent<AudioSource>();
+    }
 
     void Update() { }
 
@@ -14,5 +19,7 @@ public class SingleFireWeapon : Weapon
         projectile.transform.position = parentTransform.position;
         projectile.transform.rotation = parentTransform.rotation;
         projectile.Init(direction);
+
+        _sound.Play();
     }
 }

@@ -4,9 +4,14 @@ public class MultiFireWeapon : Weapon
 {
     [SerializeField] private int _numberProjectiles = 3;
 
+    private AudioSource _sound;
+
     private int fireAngle = 60;
 
-    void Start() { }
+    void Start() 
+    {
+        _sound = GetComponent<AudioSource>();
+    }
 
     void Update() { }
 
@@ -26,5 +31,7 @@ public class MultiFireWeapon : Weapon
             projectile.transform.Rotate(new Vector3(0, 0, (i - 1) * projectileAngle), Space.Self);
             projectile.Init(Quaternion.AngleAxis((i - 1) * projectileAngle, Vector3.forward) * direction);
         }
+
+        _sound.Play();
     }
 }
