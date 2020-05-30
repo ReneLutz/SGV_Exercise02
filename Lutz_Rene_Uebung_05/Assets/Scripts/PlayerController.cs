@@ -3,6 +3,7 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
+    [SerializeField] private float life = 3;
     [SerializeField] private float _speed;
     [SerializeField] private Weapon _currentWeapon;
 
@@ -92,5 +93,14 @@ public class PlayerController : MonoBehaviour
         weapon.transform.SetParent(_transform);
 
         _weapons.Add(weapon);
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        Enemy enemy = collision.gameObject.GetComponent<Enemy>();
+
+        if (!enemy) return;
+
+        life -= 1;
     }
 }
