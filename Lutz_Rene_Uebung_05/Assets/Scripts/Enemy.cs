@@ -5,6 +5,7 @@ public class Enemy : MonoBehaviour
 {
     [SerializeField] private float _maxLife = 2;
     [SerializeField] private float _speed;
+    [SerializeField] private int _points;
 
     [SerializeField] private ParticleSystem _explosion;
 
@@ -100,6 +101,7 @@ public class Enemy : MonoBehaviour
 
         if (_life <= 0)
         {
+            Score.AddScore(_points);
             Explode();
         }
     }

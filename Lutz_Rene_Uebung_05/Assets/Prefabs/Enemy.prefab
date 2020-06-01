@@ -50,6 +50,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _maxLife: 1
   _speed: 3
+  _points: 5
   _explosion: {fileID: 61701530215303606}
 --- !u!212 &3666052036259087508
 SpriteRenderer:
