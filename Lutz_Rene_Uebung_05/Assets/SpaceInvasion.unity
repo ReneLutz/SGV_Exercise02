@@ -918,7 +918,6 @@ MonoBehaviour:
   life: 3
   _speed: 5
   _currentWeapon: {fileID: 1887087993}
-  _sceneController: {fileID: 0}
 --- !u!58 &645227606
 CircleCollider2D:
   m_ObjectHideFlags: 0

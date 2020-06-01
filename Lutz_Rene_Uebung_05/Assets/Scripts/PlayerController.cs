@@ -102,5 +102,10 @@ public class PlayerController : MonoBehaviour
         if (!enemy) return;
 
         life -= 1;
+
+        if (life <= 0)
+        {
+            SceneController.SceneControl.SwitchToEndScreen();
+        }
     }
 }
